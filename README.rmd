@@ -1,0 +1,14 @@
+COMP380 Final Project Spring 2018
+created by Matt Bonazzoli, Ben Lewis and Brett Graham
+
+###Installation
+
+###Launching Program
+
+###Project Information
+
+This project aims to create an agent that learns to navigate a world and find trees.
+Once a tree is found the objective is to then collect the wood resource from the tree.
+
+Learning was performed using tabular-Q learning, a method of reinforcement learning that
+applies weights to actions in different states to achieve a goal.
