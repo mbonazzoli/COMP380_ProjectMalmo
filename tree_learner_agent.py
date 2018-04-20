@@ -21,8 +21,9 @@ class tabularQlearner:
         self.logger.handlers = []
         self.logger.addHandler(logging.StreamHandler(sys.stdout))
 
-        self.actions = ["movenorth 1", "movesouth 1", "movewest 1", "moveeast 1"]
+        self.actions = ["movenorth 1", "movesouth 1", "moveeast 1", "movewest 1"]
         self.q_table = {}
+        #TODO refactor
 
     def updateQTable(self, reward, current_state):
         """Change q_table to reflect what we have learnt."""
@@ -54,10 +55,11 @@ class tabularQlearner:
         obs_text = world_state.observations[-1].text
         obs = json.loads(obs_text)  # most recent observation
         self.logger.debug(obs)
-        if not u'XPos' in obs or not u'ZPos' in obs:
+        if not u'XPos' in obs or not u'ZPos' in obs or not u'Yaw':
             self.logger.error("Incomplete observation received: %s" % obs_text)
             return 0
-        current_s = "%d:%d" % (int(obs[u'XPos']), int(obs[u'ZPos']))
+        current_s = "%d:%d" % (int(obs[u'XPos']),
+                                     int(obs[u'ZPos']))
         self.logger.debug("State: %s (x = %.2f, z = %.2f)" % (current_s, float(obs[u'XPos']), float(obs[u'ZPos'])))
         if not self.q_table.has_key(current_s):
             self.q_table[current_s] = ([0] * len(self.actions))
