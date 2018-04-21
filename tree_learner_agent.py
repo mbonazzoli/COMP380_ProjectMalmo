@@ -55,12 +55,17 @@ class tabularQlearner:
         obs_text = world_state.observations[-1].text
         obs = json.loads(obs_text)  # most recent observation
         self.logger.debug(obs)
-        if not u'XPos' in obs or not u'ZPos' in obs or not u'Yaw':
-            self.logger.error("Incomplete observation received: %s" % obs_text)
-            return 0
-        current_s = "%d:%d" % (int(obs[u'XPos']),
-                                     int(obs[u'ZPos']))
-        self.logger.debug("State: %s (x = %.2f, z = %.2f)" % (current_s, float(obs[u'XPos']), float(obs[u'ZPos'])))
+        # using grid output as state space
+        if not u'floor3x3' in obs:
+            self.logger.error("Incomplete observation recieved %s" % obs_text)
+            return None
+        current_s = self.createGridObs(obs['floor3x3'])
+        # if not u'XPos' in obs or not u'ZPos' in obs or not u'Yaw':
+        #     self.logger.error("Incomplete observation received: %s" % obs_text)
+        #     return 0
+        # current_s = "%d:%d" % (int(obs[u'XPos']),
+        #                              int(obs[u'ZPos']))
+        # self.logger.debug("State: %s (x = %.2f, z = %.2f)" % (current_s, float(obs[u'XPos']), float(obs[u'ZPos'])))
         if not self.q_table.has_key(current_s):
             self.q_table[current_s] = ([0] * len(self.actions))
 
@@ -96,6 +101,10 @@ class tabularQlearner:
             self.logger.error("Failed to send command: %s" % e)
 
         return current_r
+
+    def createGridObs(self, grid):
+        return ": ".join(grid[:9])
+
 
     def run(self, agent_host):
         """run the agent on the world"""
@@ -163,7 +172,7 @@ class tabularQlearner:
 
         # self.drawQ()
 
-        return total_reward
+        return total_reward, self.q_table
 
 
 

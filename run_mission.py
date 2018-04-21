@@ -82,8 +82,9 @@ for i in range(num_repeats):
     print
 
     # -- run the agent in the world -- #
-    cumulative_reward = agent.run(agent_host)
+    cumulative_reward, q_table = agent.run(agent_host)
     print 'Cumulative reward: %d' % cumulative_reward
+    print 'Q_table %s' % q_table
     cumulative_rewards += [cumulative_reward]
 
     # -- clean up -- #
