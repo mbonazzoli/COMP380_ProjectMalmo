@@ -24,9 +24,10 @@ import sys
 import time
 from tree_learner_agent import tabularQlearner
 
-sys.stdout = os.fdopen(sys.stdout.fileno(), 'w', 0)  # flush print output immediately
 
-agent = tabularQlearner()
+sys.stdout = os.fdopen(sys.stdout.fileno(), 'w', 0)  # flush print output immediately
+actions = ['movenorth 1', 'movesouth 1', 'moveeast 1', 'movewest 1']
+agent = tabularQlearner(actions=actions)
 agent_host = MalmoPython.AgentHost()
 try:
     agent_host.parse(sys.argv)
@@ -87,8 +88,13 @@ for i in range(num_repeats):
     print 'Q_table %s' % q_table
     cumulative_rewards += [cumulative_reward]
 
+    agent.drawGraph(cumulative_reward)
+
     # -- clean up -- #
     time.sleep(0.5)  # (let the Mod reset)
+
+agent.saveModel()
+
 
 print "Done."
 

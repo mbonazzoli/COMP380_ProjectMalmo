@@ -4,14 +4,16 @@
 import MalmoPython
 import json
 import logging
-import os
+# import os
 import random
 import sys
 import time
+import matplotlib.pyplot as plt
+import numpy as np
 
 class tabularQlearner:
-    def __init__(self, agent_host = None):
-        self.epsilon = 0.01  # chance of taking a random action instead of the best
+    def __init__(self, training=True, actions=[], epsilon=0.1, alpha=0.1, gamma=1.0):
+        self.epsilon = epsilon  # chance of taking a random action instead of the best
 
         self.logger = logging.getLogger(__name__)
         if False:  # True if you want to see more information
@@ -21,9 +23,12 @@ class tabularQlearner:
         self.logger.handlers = []
         self.logger.addHandler(logging.StreamHandler(sys.stdout))
 
-        self.actions = ["movenorth 1", "movesouth 1", "moveeast 1", "movewest 1"]
+        self.actions = actions
+        self.alpha = alpha
+        self.gamma = gamma
         self.q_table = {}
-        #TODO refactor
+        self.training = training
+
 
     def updateQTable(self, reward, current_state):
         """Change q_table to reflect what we have learnt."""
@@ -32,7 +37,8 @@ class tabularQlearner:
         old_q = self.q_table[self.prev_s][self.prev_a]
 
         # TODO: what should the new action value be?
-        new_q = reward
+        new_q = old_q + self.alpha * (reward
+                + self.gamma * max(self.q_table[current_state]) - old_q)
 
         # assign the new action value to the Q-table
         self.q_table[self.prev_s][self.prev_a] = new_q
@@ -44,7 +50,7 @@ class tabularQlearner:
         old_q = self.q_table[self.prev_s][self.prev_a]
 
         # TODO: what should the new action value be?
-        new_q = reward
+        new_q = old_q + self.alpha * (reward - old_q)
 
         # assign the new action value to the Q-table
         self.q_table[self.prev_s][self.prev_a] = new_q
@@ -56,7 +62,7 @@ class tabularQlearner:
         obs = json.loads(obs_text)  # most recent observation
         self.logger.debug(obs)
         # using grid output as state space
-        if not u'floor3x3' in obs:
+        if u'floor3x3'not in obs:
             self.logger.error("Incomplete observation recieved %s" % obs_text)
             return None
         current_s = self.createGridObs(obs['floor3x3'])
@@ -101,10 +107,6 @@ class tabularQlearner:
             self.logger.error("Failed to send command: %s" % e)
 
         return current_r
-
-    def createGridObs(self, grid):
-        return ": ".join(grid[:9])
-
 
     def run(self, agent_host):
         """run the agent on the world"""
@@ -170,11 +172,36 @@ class tabularQlearner:
         if self.prev_s is not None and self.prev_a is not None:
             self.updateQTableFromTerminatingState(current_r)
 
-        # self.drawQ()
-
         return total_reward, self.q_table
 
+    def drawGraph(self, rewards):
+        x = np.arrange(stop=len(rewards))
+        plt.plot(x, rewards)
+        plt.ylabel('total reward')
+        plt.xlabel('epoch')
 
+
+    def createGridObs(self, grid):
+        return ": ".join(grid[:9])
+
+    def saveModel(self):
+        model = json.dumps(self.q_table)
+        f = open("tree_model.json", "w")
+        f.write(model)
+        f.close()
+        print("Wrote model to file.")
+
+    def loadModel(self, model_file):
+        with open(model_file) as f:
+            self.q_table = json.load(f)
+
+    def training(self):
+        """switch to training mode"""
+        self.training = True
+
+    def evaluate(self):
+        """switch to evaluation mode"""
+        self.training = True
 
 if __name__ == '__main__':
 
