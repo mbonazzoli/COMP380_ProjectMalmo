@@ -26,7 +26,7 @@ from tree_learner_agent import tabularQlearner
 
 
 sys.stdout = os.fdopen(sys.stdout.fileno(), 'w', 0)  # flush print output immediately
-actions = ['movenorth 1', 'movesouth 1', 'moveeast 1', 'movewest 1']
+actions = ['movenorth 1', 'movesouth 1', 'moveeast 1', 'movewest 1', "attack 1"]
 agent = tabularQlearner(actions=actions)
 agent_host = MalmoPython.AgentHost()
 try:
@@ -40,6 +40,7 @@ if agent_host.receivedArgument("help"):
     exit(0)
 
 # -- set up the mission -- #
+# mission_file = './tree_finder_world1.xml'
 mission_file = './tree_finder_world1.xml'
 with open(mission_file, 'r') as f:
     print "Loading mission from %s" % mission_file
@@ -88,7 +89,8 @@ for i in range(num_repeats):
     print 'Q_table %s' % q_table
     cumulative_rewards += [cumulative_reward]
 
-    agent.drawGraph(cumulative_reward)
+    print("OUTPUT GRAPH")
+    agent.drawGraph(cumulative_rewards)
 
     # -- clean up -- #
     time.sleep(0.5)  # (let the Mod reset)

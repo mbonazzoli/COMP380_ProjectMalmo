@@ -29,6 +29,7 @@ class tabularQlearner:
         self.q_table = {}
         self.training = training
 
+        self.fig, self.ax = self.setUpGraph()
 
     def updateQTable(self, reward, current_state):
         """Change q_table to reflect what we have learnt."""
@@ -36,7 +37,6 @@ class tabularQlearner:
         # retrieve the old action value from the Q-table (indexed by the previous state and the previous action)
         old_q = self.q_table[self.prev_s][self.prev_a]
 
-        # TODO: what should the new action value be?
         new_q = old_q + self.alpha * (reward
                 + self.gamma * max(self.q_table[current_state]) - old_q)
 
@@ -49,7 +49,6 @@ class tabularQlearner:
         # retrieve the old action value from the Q-table (indexed by the previous state and the previous action)
         old_q = self.q_table[self.prev_s][self.prev_a]
 
-        # TODO: what should the new action value be?
         new_q = old_q + self.alpha * (reward - old_q)
 
         # assign the new action value to the Q-table
@@ -63,7 +62,7 @@ class tabularQlearner:
         self.logger.debug(obs)
         # using grid output as state space
         if u'floor3x3'not in obs:
-            self.logger.error("Incomplete observation recieved %s" % obs_text)
+            self.logger.error("Incomplete observation received %s" % obs_text)
             return None
         current_s = self.createGridObs(obs['floor3x3'])
         # if not u'XPos' in obs or not u'ZPos' in obs or not u'Yaw':
@@ -78,8 +77,6 @@ class tabularQlearner:
         # update Q values
         if self.prev_s is not None and self.prev_a is not None:
             self.updateQTable(current_r, current_s)
-
-        # self.drawQ( curr_x = int(obs[u'XPos']), curr_y = int(obs[u'ZPos']) )
 
         # select the next action
         rnd = random.random()
@@ -151,7 +148,7 @@ class tabularQlearner:
                         current_r += reward.getValue()
                 # allow time to stabilise after action
                 while True:
-                    time.sleep(0.1)
+                    time.sleep(0.01)
                     world_state = agent_host.getWorldState()
                     for error in world_state.errors:
                         self.logger.error("Error: %s" % error.text)
@@ -174,17 +171,48 @@ class tabularQlearner:
 
         return total_reward, self.q_table
 
+    def setUpGraph(self):
+        if self.training:
+            title = "Training"
+        else:
+            title = "Evaluation"
+
+        fig = plt.figure()
+        ax = fig.add_subplot(111)
+        plt.ylim(0, 200)
+        plt.xlim(0, 151)
+
+        plt.ion()
+
+        fig.show()
+        fig.canvas.draw()
+
+        # plt.title(title)
+        # plt.ylabel('Total Reward')
+        # plt.xlabel('Epoch')
+        return fig, ax
+
     def drawGraph(self, rewards):
-        x = np.arrange(stop=len(rewards))
-        plt.plot(x, rewards)
-        plt.ylabel('total reward')
-        plt.xlabel('epoch')
+
+        self.ax.clear()
+        self.ax.plot(np.arange(len(rewards)), rewards, '-b')
+        self.fig.canvas.draw()
+        self.fig.show()
+        # self.canvas.restore_region(self.background)
+        # self.hl.set_xdata(np.append(self.hl.get_xdata(), np.arange(len(rewards))))
+        # self.hl.set_ydata(rewards)
+        #
+        # self.ax.draw_animated(self.hl)
+        #
+        # self.canvas.blit(self.ax.bbox)
+        plt.show()
 
 
     def createGridObs(self, grid):
         return ": ".join(grid[:9])
 
     def saveModel(self):
+        # TODO get working
         model = json.dumps(self.q_table)
         f = open("tree_model.json", "w")
         f.write(model)
