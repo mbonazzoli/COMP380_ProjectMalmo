@@ -2,7 +2,7 @@
 <Mission xmlns="http://ProjectMalmo.microsoft.com" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 
   <About>
-    <Summary>Cliff walking mission based on Sutton and Barto.</Summary>
+    <Summary>Tree Finder</Summary>
   </About>
 
   <ServerSection>
@@ -65,7 +65,7 @@
   </ServerSection>
 
   <AgentSection mode="Survival">
-    <Name>Cristina</Name>
+    <Name>Roby</Name>
     <AgentStart>
       <Placement x="4.5" y="46.0" z="1.5" pitch="60" yaw="0"/>
     </AgentStart>
