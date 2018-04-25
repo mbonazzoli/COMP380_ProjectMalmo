@@ -26,7 +26,7 @@ from tree_learner_agent import tabularQlearner
 
 
 sys.stdout = os.fdopen(sys.stdout.fileno(), 'w', 0)  # flush print output immediately
-actions = ['movenorth 1', 'movesouth 1', 'moveeast 1', 'movewest 1', "attack 1"]
+actions = ['movenorth 1', 'movesouth 1', 'moveeast 1', 'movewest 1']
 agent = tabularQlearner(actions=actions)
 agent_host = MalmoPython.AgentHost()
 try:
@@ -49,14 +49,20 @@ with open(mission_file, 'r') as f:
 
 max_retries = 3
 
-if agent_host.receivedArgument("test"):
-    num_repeats = 1
-else:
-    num_repeats = 150
+# if agent_host.receivedArgument("test"):
+#     num_repeats = 1
+#
+# else:
+num_repeats = 10
 
 cumulative_rewards = []
 for i in range(num_repeats):
-
+    if num_repeats > num_repeats*.8:
+        agent.evaluate()
+        print("Evaluation")
+    else:
+        agent.training()
+        print ("Training")
     print
     print 'Repeat %d of %d' % (i + 1, num_repeats)
 
