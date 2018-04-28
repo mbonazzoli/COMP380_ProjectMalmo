@@ -38,7 +38,7 @@ missionXML='''<?xml version="1.0" encoding="UTF-8" standalone="no" ?>
 <Mission xmlns="http://ProjectMalmo.microsoft.com" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 
   <About>
-    <Summary>Cliff walking mission based on Sutton and Barto.</Summary>
+    <Summary>Tree Finder</Summary>
   </About>
 
   <ServerSection>
@@ -48,49 +48,65 @@ missionXML='''<?xml version="1.0" encoding="UTF-8" standalone="no" ?>
     <ServerHandlers>
       <FlatWorldGenerator generatorString="3;7,220*1,5*3,2;3;,biome_1"/>
       <DrawingDecorator>
-        <DrawCuboid x1="-2" y1="46" z1="-2" x2="20" y2="300" z2="20" type="air" />            <!-- limits of our arena -->
-        <DrawCuboid x1="-2" y1="45" z1="-2" x2="7" y2="45" z2="5" type="lava" />           <!-- lava floor -->
-        <DrawCuboid x1="1"  y1="45" z1="1"  x2="3" y2="45" z2="17" type="sandstone" />      <!-- floor of the arena -->
-        <DrawBlock x="4"  y="45" z="1" type="cobblestone" />    <!-- the starting marker -->
-        <DrawBlock x="4"  y="45" z="7" type="lapis_block" />     <!-- the destination marker -->
-        <DrawBlock x="5"  y="45" z="1" type="cobblestone" />    <!-- the starting marker -->
-        <DrawBlock x="6"  y="45" z="1" type="cobblestone" />    <!-- the starting marker -->
-        <DrawBlock x="7"  y="45" z="1" type="cobblestone" />    <!-- the starting marker -->
-        <DrawBlock x="14"  y="46" z="1" type="log" />    <!-- the starting marker -->
-        <DrawBlock x="14"  y="47" z="1" type="log" />    <!-- the starting marker -->
-        <DrawBlock x="14"  y="47" z="1" type="log" />    <!-- the starting marker -->
-        <DrawBlock x="14"  y="48" z="1" type="log" />    <!-- the starting marker -->
-        <DrawBlock x="14"  y="49" z="1" type="log" />    <!-- the starting marker -->
-        <DrawBlock x="20"  y="46" z="1" type="log" />    <!-- the starting marker -->
-        <DrawBlock x="20"  y="47" z="1" type="log" />    <!-- the starting marker -->
-        <DrawBlock x="20"  y="47" z="1" type="log" />    <!-- the starting marker -->
-        <DrawBlock x="20"  y="48" z="1" type="log" />    <!-- the starting marker -->
-        <DrawBlock x="20"  y="49" z="1" type="log" />    <!-- the starting marker -->
-        <DrawBlock x="14"  y="46" z="10" type="log" />    <!-- the starting marker -->
-        <DrawBlock x="14"  y="47" z="10" type="log" />    <!-- the starting marker -->
-        <DrawBlock x="14"  y="47" z="10" type="log" />    <!-- the starting marker -->
-        <DrawBlock x="14"  y="48" z="10" type="log" />    <!-- the starting marker -->
-        <DrawBlock x="14"  y="49" z="10" type="log" />    <!-- the starting marker -->
-        <DrawBlock x="17"  y="46" z="6" type="log" />    <!-- the starting marker -->
-        <DrawBlock x="17"  y="47" z="6" type="log" />    <!-- the starting marker -->
-        <DrawBlock x="17"  y="47" z="6" type="log" />    <!-- the starting marker -->
-        <DrawBlock x="17"  y="48" z="6" type="log" />    <!-- the starting marker -->
-        <DrawBlock x="17"  y="49" z="6" type="log" />    <!-- the starting marker -->
-        <DrawCuboid x1="10" y1="45" z1="1" x2="11" y2="45" z2="5" type="water" />            <!-- limits of our arena -->
-        <DrawBlock x="3"  y="45" z="10" type="log" />    <!-- the starting marker -->
-        <DrawBlock x="3"  y="46" z="10" type="log" />    <!-- the starting marker -->
-        <DrawBlock x="3"  y="47" z="10" type="log" />    <!-- the starting marker -->
-        <DrawBlock x="3"  y="48" z="10" type="log" />    <!-- the starting marker -->
-        <DrawBlock x="3"  y="49" z="10" type="log" />    <!-- the starting marker -->
-        <DrawBlock x="10"  y="45" z="15" type="log" />    <!-- the starting marker -->
-        <DrawBlock x="10"  y="46" z="15" type="log" />    <!-- the starting marker -->
-        <DrawBlock x="10"  y="47" z="15" type="log" />    <!-- the starting marker -->
-        <DrawBlock x="10"  y="48" z="15" type="log" />    <!-- the starting marker -->
-        <DrawBlock x="10"  y="49" z="15" type="log" />    <!-- the starting marker -->
-        <DrawCuboid x1="6" y1="45" z1="12" x2="15" y2="45" z2="12" type="water" />            <!-- limits of our arena -->
-        <DrawCuboid x1="15" y1="45" z1="20" x2="15" y2="45" z2="14" type="lava" />            <!-- limits of our arena -->
-        <DrawCuboid x1="6" y1="45" z1="20" x2="6" y2="45" z2="14" type="lava" />            <!-- limits of our arena -->
-        <DrawCuboid x1="15" y1="45" z1="3" x2="18" y2="45" z2="4" type="lava" />            <!-- limits of our arena -->
+        <!-- coordinates for cuboid are inclusive -->
+        <DrawCuboid x1="-2" y1="3045" z1="-2" x2="20" y2="300" z2="20" type="stone" />
+        <DrawCuboid x1 = "1998" y1 = "226" z1 = "-10" x2 = "2020" y2 = "226" z2 = "20" type = "dirt"/>
+        <DrawCuboid x1 = "1997" y1 = "226" z1 = "-11" x2 = "1998" y2 = "226" z2 = "21" type = "lava"/>
+        <DrawCuboid x1 = "2021" y1 = "226" z1 = "-11" x2 = "2022" y2 = "226" z2 = "21" type = "lava"/>
+        <DrawCuboid x1 = "2021" y1 = "226" z1 = "20" x2 = "2022" y2 = "226" z2 = "21" type = "lava"/>
+        <DrawCuboid x1 = "1997" y1 = "226" z1 = "-10" x2 = "2020" y2 = "226" z2 = "-11" type = "lava"/>
+        <DrawCuboid x1 = "1998" y1 = "226" z1 = "21" x2 = "2020" y2 = "226" z2 = "20" type = "lava"/>
+
+
+
+        <DrawBlock x="2004"  y="226" z="1" type="cobblestone" />    <!-- the starting marker -->
+        <DrawBlock x="2004"  y="226" z="1" type="cobblestone" />    <!-- the starting marker -->
+        <DrawBlock x="2004"  y="226" z="7" type="cobblestone" />     <!-- the destination marker -->
+        <DrawBlock x="2005"  y="226" z="1" type="cobblestone" />    <!-- the starting marker -->
+        <DrawBlock x="2006"  y="226" z="1" type="cobblestone" />    <!-- the starting marker -->
+        <DrawBlock x="2007"  y="226" z="1" type="cobblestone" />    <!-- the starting marker -->
+        <DrawBlock x="2014"  y="227" z="1" type="lapis_block" />    <!-- the starting marker -->
+        <DrawBlock x="2014"  y="228" z="1" type="lapis_block" />    <!-- the starting marker -->
+        <DrawBlock x="2014"  y="228" z="1" type="lapis_block" />    <!-- the starting marker -->
+        <DrawBlock x="2014"  y="229" z="1" type="lapis_block" />    <!-- the starting marker -->
+        <DrawBlock x="2014"  y="230" z="1" type="lapis_block" />    <!-- the starting marker -->
+        <DrawBlock x="2020"  y="227" z="1" type="lapis_block" />    <!-- the starting marker -->
+        <DrawBlock x="2020"  y="228" z="1" type="lapis_block" />    <!-- the starting marker -->
+        <DrawBlock x="2020"  y="228" z="1" type="lapis_block" />    <!-- the starting marker -->
+        <DrawBlock x="2020"  y="229" z="1" type="lapis_block" />    <!-- the starting marker -->
+        <DrawBlock x="2020"  y="230" z="1" type="lapis_block" />    <!-- the starting marker -->
+        <DrawBlock x="2014"  y="227" z="10" type="lapis_block" />    <!-- the starting marker -->
+        <DrawBlock x="2014"  y="228" z="10" type="lapis_block" />    <!-- the starting marker -->
+        <DrawBlock x="2014"  y="228" z="10" type="lapis_block" />    <!-- the starting marker -->
+        <DrawBlock x="2014"  y="229" z="10" type="lapis_block" />    <!-- the starting marker -->
+        <DrawBlock x="2014"  y="230" z="10" type="lapis_block" />    <!-- the starting marker -->
+        <DrawBlock x="2019"  y="227" z="6" type="lapis_block" />    <!-- the starting marker -->
+        <DrawBlock x="2019"  y="228" z="6" type="lapis_block" />    <!-- the starting marker -->
+        <DrawBlock x="2019"  y="228" z="6" type="lapis_block" />    <!-- the starting marker -->
+        <DrawBlock x="2019"  y="229" z="6" type="lapis_block" />    <!-- the starting marker -->
+        <DrawBlock x="2019"  y="230" z="6" type="lapis_block" />    <!-- the starting marker -->
+        <DrawCuboid x1="2010" y1="226" z1="1" x2="2011" y2="226" z2="5" type="lava" />            <!-- limits of our arena -->
+        <DrawBlock x="2003"  y="226" z="10" type="lapis_block" />    <!-- the starting marker -->
+        <DrawBlock x="2003"  y="227" z="10" type="lapis_block" />    <!-- the starting marker -->
+        <DrawBlock x="2003"  y="228" z="10" type="lapis_block" />    <!-- the starting marker -->
+        <DrawBlock x="2003"  y="229" z="10" type="lapis_block" />    <!-- the starting marker -->
+        <DrawBlock x="2003"  y="230" z="10" type="lapis_block" />    <!-- the starting marker -->
+        <DrawBlock x="2010"  y="226" z="15" type="lapis_block" />    <!-- the starting marker -->
+        <DrawBlock x="2010"  y="227" z="15" type="lapis_block" />    <!-- the starting marker -->
+        <DrawBlock x="2010"  y="228" z="15" type="lapis_block" />    <!-- the starting marker -->
+        <DrawBlock x="2010"  y="229" z="15" type="lapis_block" />    <!-- the starting marker -->
+        <DrawBlock x="2010"  y="230" z="15" type="lapis_block" />    <!-- the starting marker -->
+        <DrawCuboid x1="2006" y1="226" z1="12" x2="2015" y2="226" z2="12" type="lava" />            <!-- limits of our arena -->
+        <DrawCuboid x1="2015" y1="226" z1="20" x2="2015" y2="226" z2="14" type="lava" />            <!-- limits of our arena -->
+        <DrawCuboid x1="2006" y1="226" z1="20" x2="2006" y2="226" z2="14" type="lava" />            <!-- limits of our arena -->
+        <DrawCuboid x1="2015" y1="226" z1="3" x2="2018" y2="226" z2="4" type="lava" />            <!-- limits of our arena -->
+        <DrawCuboid x1="2003" y1="227" z1="-3" x2="2003" y2="230" z2="-3" type="lapis_block" />            <!-- limits of our arena -->
+        <DrawCuboid x1="2008" y1="226" z1="-3" x2="2009" y2="226" z2="-6" type="lava" />            <!-- limits of our arena -->
+        <DrawCuboid x1="2014" y1="226" z1="-3" x2="2014" y2="226" z2="-11" type="lava" />            <!-- limits of our arena -->
+        <DrawCuboid x1="2015" y1="226" z1="-1" x2="2021" y2="226" z2="-1" type="lava" />            <!-- limits of our arena -->
+        <DrawCuboid x1="2019" y1="227" z1="-8" x2="2019" y2="230" z2="-8" type="lapis_block" />            <!-- limits of our arena -->
+
+
       </DrawingDecorator>
       <ServerQuitFromTimeUp timeLimitMs="20000"/>
       <ServerQuitWhenAnyAgentFinishes/>
@@ -98,26 +114,37 @@ missionXML='''<?xml version="1.0" encoding="UTF-8" standalone="no" ?>
   </ServerSection>
 
   <AgentSection mode="Survival">
-    <Name>Cristina</Name>
+    <Name>Roby</Name>
     <AgentStart>
-      <Placement x="4" y="46.0" z="1.5" pitch="30" yaw="0"/>
+      <Placement x="2004" y="227.0" z="1" pitch="60" yaw="0"/>
     </AgentStart>
     <AgentHandlers>
       <DiscreteMovementCommands/>
       <ObservationFromFullStats/>
+      <ObservationFromGrid>
+        <Grid name="floor3x3">
+            <min x="-1" y="-1" z="-1"/>
+            <max x="1" y="1" z="1"/>
+        </Grid>
+      </ObservationFromGrid>
       <RewardForTouchingBlockType>
         <Block reward="-100.0" type="lava" behaviour="onceOnly"/>
-        <Block reward="100.0" type="lapis_block" behaviour="onceOnly"/>
+        <Block reward="100.0" type="log" behaviour="onceOnly"/>
       </RewardForTouchingBlockType>
       <RewardForSendingCommand reward="-1" />
+        <RewardForCollectingItem>
+            <Item reward="200" type="log"/>
+            <Item reward="-200" type="stone"/>
+            <Item reward="-200" type="sandstone"/>
+        </RewardForCollectingItem>
       <AgentQuitFromTouchingBlockType>
           <Block type="lava" />
-          <Block type="lapis_block" />
       </AgentQuitFromTouchingBlockType>
     </AgentHandlers>
   </AgentSection>
+</Mission>
 
-</Mission>'''
+'''
 
 # Create default Malmo objects:
 
