@@ -29,6 +29,7 @@ sys.stdout = os.fdopen(sys.stdout.fileno(), 'w', 0)  # flush print output immedi
 actions = ['movenorth 1', 'movesouth 1', 'moveeast 1', 'movewest 1']
 agent = tabularQlearner(actions=actions)
 agent_host = MalmoPython.AgentHost()
+
 try:
     agent_host.parse(sys.argv)
 except RuntimeError as e:
@@ -57,12 +58,7 @@ num_repeats = 10
 
 cumulative_rewards = []
 for i in range(num_repeats):
-    if num_repeats > num_repeats*.8:
-        agent.evaluate()
-        print("Evaluation")
-    else:
-        agent.training()
-        print ("Training")
+
     print
     print 'Repeat %d of %d' % (i + 1, num_repeats)
 
