@@ -27,7 +27,7 @@ class tabularQlearner:
         self.alpha = alpha
         self.gamma = gamma
 
-        self.fig, self.ax = self.setUpGraph()
+        # self.fig, self.ax = self.setUpGraph()
 
         self.canvas = None
         self.root = None
@@ -72,13 +72,23 @@ class tabularQlearner:
         if u'floor3x3'not in obs:
             self.logger.error("Incomplete observation received %s" % obs_text)
             return None
-        current_s = self.createGridObs(obs['floor3x3'])
+        current_s_list = self.createGridObs(obs['floor3x3'])
+
+        # if len(world_state.video_frames) > 0:
+        #     tree_pos = self.findTreePos(world_state.video_frames[0].pixels)
+        #     current_s_list.append(tree_pos)
+        # else:
+        #     current_s_list.append(-1)
+
+        current_s = ": ".join(current_s_list[:9])
 
         if not u'XPos' in obs or not u'ZPos' in obs or not u'Yaw':
+            print("Not Found pos Obs")
             self.logger.error("Incomplete observation received: %s" % obs_text)
             return 0
         current_pos = "%d:%d" % (int(obs[u'XPos']),
                                      int(obs[u'ZPos']))
+
         self.logger.debug("State: %s (x = %.2f, z = %.2f)" % (current_pos, float(obs[u'XPos']), float(obs[u'ZPos'])))
 
 
@@ -153,6 +163,7 @@ class tabularQlearner:
             else:
                 # wait for non-zero reward
                 while world_state.is_mission_running and current_r == 0:
+
                     time.sleep(0.1)
                     world_state = agent_host.getWorldState()
                     for error in world_state.errors:
@@ -184,9 +195,28 @@ class tabularQlearner:
 
         return total_reward, self.q_table
 
-    def findTreeDepth( self, frame ):
-        pass
+    def findTreePos(self, frame):
+        video_height = 240
+        video_width = 320
+
         y = int(video_height/2)
+        row_start = y*video_width
+
+        depth_prev = 0
+        diff = 0
+        diff_max = 0
+        diff_max_pos = 0
+        min_dist = 0
+
+        for x in range(0, video_width):
+            depth_curr = frame[(row_start + x) * 4 + 3]
+            diff = abs(depth_curr-depth_prev)
+            if diff > diff_max:
+                diff_max = diff
+                diff_max_pos = x
+
+        return diff_max_pos
+
 
     def setUpGraph(self):
 
@@ -211,7 +241,9 @@ class tabularQlearner:
         plt.show()
 
     def createGridObs(self, grid):
-        return ": ".join(grid[:9])
+        stringObs = ": ".join(grid[:9])
+        listObs = grid[:9]
+        return listObs
 
     def saveModel(self):
         # TODO get working
@@ -225,22 +257,21 @@ class tabularQlearner:
         with open(model_file) as f:
             return json.load(f)
 
-    def training(self):
-        """switch to training mode"""
-        print("Training Mode")
-        self.training = True
-
-    def evaluate(self):
-        """switch to evaluation mode"""
-        print("Evaluation mode")
-        self.training = False
+    # def training(self):
+    #     """switch to training mode"""
+    #     print("Training Mode")
+    #     self.training = True
+    #
+    # def evaluate(self):
+    #     """switch to evaluation mode"""
+    #     print("Evaluation mode")
+    #     self.training = False
 
 
 if __name__ == '__main__':
 
     agent_host = MalmoPython.AgentHost()
     world_state = agent_host.getWorldState()
-
+    print(world_state.video_frames[0].pixels)
+    print
     print(world_state.observations)
-
-    # escapeBoxRoby = excavationBehavior(agent_host)

@@ -91,8 +91,8 @@ for i in range(num_repeats):
     print 'Q_table %s' % q_table
     cumulative_rewards += [cumulative_reward]
 
-    print("OUTPUT GRAPH")
-    agent.drawGraph(cumulative_rewards)
+    # print("OUTPUT GRAPH")
+    # agent.drawGraph(cumulative_rewards)
 
     # -- clean up -- #
     time.sleep(0.5)  # (let the Mod reset)

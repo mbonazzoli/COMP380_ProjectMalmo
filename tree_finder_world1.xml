@@ -1,4 +1,4 @@
-missionXML='''<?xml version="1.0" encoding="UTF-8" standalone="no" ?>
+<?xml version="1.0" encoding="UTF-8" standalone="no" ?>
 <Mission xmlns="http://ProjectMalmo.microsoft.com" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 
   <About>
@@ -20,8 +20,6 @@ missionXML='''<?xml version="1.0" encoding="UTF-8" standalone="no" ?>
         <DrawCuboid x1 = "2021" y1 = "226" z1 = "20" x2 = "2022" y2 = "226" z2 = "21" type = "lava"/>
         <DrawCuboid x1 = "1997" y1 = "226" z1 = "-10" x2 = "2020" y2 = "226" z2 = "-11" type = "lava"/>
         <DrawCuboid x1 = "1998" y1 = "226" z1 = "21" x2 = "2020" y2 = "226" z2 = "20" type = "lava"/>
-
-
 
         <DrawBlock x="2004"  y="226" z="1" type="cobblestone" />    <!-- the starting marker -->
         <DrawBlock x="2004"  y="226" z="1" type="cobblestone" />    <!-- the starting marker -->
@@ -69,10 +67,8 @@ missionXML='''<?xml version="1.0" encoding="UTF-8" standalone="no" ?>
         <DrawCuboid x1="2014" y1="226" z1="-3" x2="2014" y2="226" z2="-11" type="lava" />            <!-- limits of our arena -->
         <DrawCuboid x1="2015" y1="226" z1="-1" x2="2021" y2="226" z2="-1" type="lava" />            <!-- limits of our arena -->
         <DrawCuboid x1="2019" y1="227" z1="-8" x2="2019" y2="230" z2="-8" type="lapis_block" />            <!-- limits of our arena -->
-
-
       </DrawingDecorator>
-      <ServerQuitFromTimeUp timeLimitMs="20000"/>
+      <ServerQuitFromTimeUp timeLimitMs="15000"/>
       <ServerQuitWhenAnyAgentFinishes/>
     </ServerHandlers>
   </ServerSection>
@@ -80,20 +76,25 @@ missionXML='''<?xml version="1.0" encoding="UTF-8" standalone="no" ?>
   <AgentSection mode="Survival">
     <Name>Roby</Name>
     <AgentStart>
-      <Placement x="2004" y="227.0" z="1" pitch="60" yaw="0"/>
+      <Placement x="2004.5" y="227.0" z="1.5" pitch="0" yaw="0"/>
     </AgentStart>
     <AgentHandlers>
       <DiscreteMovementCommands/>
+      <ContinuousMovementCommands/>
       <ObservationFromFullStats/>
       <ObservationFromGrid>
         <Grid name="floor3x3">
             <min x="-1" y="-1" z="-1"/>
-            <max x="1" y="1" z="1"/>
+            <max x="1" y="-1" z="1"/>
         </Grid>
       </ObservationFromGrid>
+      <VideoProducer>
+        <Width> 320 </Width>
+        <Height> 240 </Height>
+      </VideoProducer>
       <RewardForTouchingBlockType>
         <Block reward="-100.0" type="lava" behaviour="onceOnly"/>
-        <Block reward="100.0" type="log" behaviour="onceOnly"/>
+        <Block reward="100.0" type="lapis_block" behaviour="oncePerBlock"/>
       </RewardForTouchingBlockType>
       <RewardForSendingCommand reward="-1" />
         <RewardForCollectingItem>
@@ -107,5 +108,3 @@ missionXML='''<?xml version="1.0" encoding="UTF-8" standalone="no" ?>
     </AgentHandlers>
   </AgentSection>
 </Mission>
-
-'''
