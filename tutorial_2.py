@@ -25,6 +25,7 @@ import MalmoPython
 import os
 import sys
 import time
+import random
 
 if sys.version_info[0] == 2:
     sys.stdout = os.fdopen(sys.stdout.fileno(), 'w', 0)  # flush print output immediately
@@ -49,6 +50,8 @@ missionXML='''<?xml version="1.0" encoding="UTF-8" standalone="no" ?>
       <FlatWorldGenerator generatorString="3;7,220*1,5*3,2;3;,biome_1"/>
       <DrawingDecorator>
         <!-- coordinates for cuboid are inclusive -->
+        <DrawCuboid x1 = "1998" y1 = "226" z1 = "-10" x2 = "2020" y2 = "300" z2 = "20" type = "air"/>
+
         <DrawCuboid x1="-2" y1="3045" z1="-2" x2="20" y2="300" z2="20" type="stone" />
         <DrawCuboid x1 = "1998" y1 = "226" z1 = "-10" x2 = "2020" y2 = "226" z2 = "20" type = "dirt"/>
         <DrawCuboid x1 = "1997" y1 = "226" z1 = "-11" x2 = "1998" y2 = "226" z2 = "21" type = "lava"/>
@@ -56,56 +59,6 @@ missionXML='''<?xml version="1.0" encoding="UTF-8" standalone="no" ?>
         <DrawCuboid x1 = "2021" y1 = "226" z1 = "20" x2 = "2022" y2 = "226" z2 = "21" type = "lava"/>
         <DrawCuboid x1 = "1997" y1 = "226" z1 = "-10" x2 = "2020" y2 = "226" z2 = "-11" type = "lava"/>
         <DrawCuboid x1 = "1998" y1 = "226" z1 = "21" x2 = "2020" y2 = "226" z2 = "20" type = "lava"/>
-
-
-
-        <DrawBlock x="2004"  y="226" z="1" type="cobblestone" />    <!-- the starting marker -->
-        <DrawBlock x="2004"  y="226" z="1" type="cobblestone" />    <!-- the starting marker -->
-        <DrawBlock x="2004"  y="226" z="7" type="cobblestone" />     <!-- the destination marker -->
-        <DrawBlock x="2005"  y="226" z="1" type="cobblestone" />    <!-- the starting marker -->
-        <DrawBlock x="2006"  y="226" z="1" type="cobblestone" />    <!-- the starting marker -->
-        <DrawBlock x="2007"  y="226" z="1" type="cobblestone" />    <!-- the starting marker -->
-        <DrawBlock x="2014"  y="227" z="1" type="lapis_block" />    <!-- the starting marker -->
-        <DrawBlock x="2014"  y="228" z="1" type="lapis_block" />    <!-- the starting marker -->
-        <DrawBlock x="2014"  y="228" z="1" type="lapis_block" />    <!-- the starting marker -->
-        <DrawBlock x="2014"  y="229" z="1" type="lapis_block" />    <!-- the starting marker -->
-        <DrawBlock x="2014"  y="230" z="1" type="lapis_block" />    <!-- the starting marker -->
-        <DrawBlock x="2020"  y="227" z="1" type="lapis_block" />    <!-- the starting marker -->
-        <DrawBlock x="2020"  y="228" z="1" type="lapis_block" />    <!-- the starting marker -->
-        <DrawBlock x="2020"  y="228" z="1" type="lapis_block" />    <!-- the starting marker -->
-        <DrawBlock x="2020"  y="229" z="1" type="lapis_block" />    <!-- the starting marker -->
-        <DrawBlock x="2020"  y="230" z="1" type="lapis_block" />    <!-- the starting marker -->
-        <DrawBlock x="2014"  y="227" z="10" type="lapis_block" />    <!-- the starting marker -->
-        <DrawBlock x="2014"  y="228" z="10" type="lapis_block" />    <!-- the starting marker -->
-        <DrawBlock x="2014"  y="228" z="10" type="lapis_block" />    <!-- the starting marker -->
-        <DrawBlock x="2014"  y="229" z="10" type="lapis_block" />    <!-- the starting marker -->
-        <DrawBlock x="2014"  y="230" z="10" type="lapis_block" />    <!-- the starting marker -->
-        <DrawBlock x="2019"  y="227" z="6" type="lapis_block" />    <!-- the starting marker -->
-        <DrawBlock x="2019"  y="228" z="6" type="lapis_block" />    <!-- the starting marker -->
-        <DrawBlock x="2019"  y="228" z="6" type="lapis_block" />    <!-- the starting marker -->
-        <DrawBlock x="2019"  y="229" z="6" type="lapis_block" />    <!-- the starting marker -->
-        <DrawBlock x="2019"  y="230" z="6" type="lapis_block" />    <!-- the starting marker -->
-        <DrawCuboid x1="2010" y1="226" z1="1" x2="2011" y2="226" z2="5" type="lava" />            <!-- limits of our arena -->
-        <DrawBlock x="2003"  y="226" z="10" type="lapis_block" />    <!-- the starting marker -->
-        <DrawBlock x="2003"  y="227" z="10" type="lapis_block" />    <!-- the starting marker -->
-        <DrawBlock x="2003"  y="228" z="10" type="lapis_block" />    <!-- the starting marker -->
-        <DrawBlock x="2003"  y="229" z="10" type="lapis_block" />    <!-- the starting marker -->
-        <DrawBlock x="2003"  y="230" z="10" type="lapis_block" />    <!-- the starting marker -->
-        <DrawBlock x="2010"  y="226" z="15" type="lapis_block" />    <!-- the starting marker -->
-        <DrawBlock x="2010"  y="227" z="15" type="lapis_block" />    <!-- the starting marker -->
-        <DrawBlock x="2010"  y="228" z="15" type="lapis_block" />    <!-- the starting marker -->
-        <DrawBlock x="2010"  y="229" z="15" type="lapis_block" />    <!-- the starting marker -->
-        <DrawBlock x="2010"  y="230" z="15" type="lapis_block" />    <!-- the starting marker -->
-        <DrawCuboid x1="2006" y1="226" z1="12" x2="2015" y2="226" z2="12" type="lava" />            <!-- limits of our arena -->
-        <DrawCuboid x1="2015" y1="226" z1="20" x2="2015" y2="226" z2="14" type="lava" />            <!-- limits of our arena -->
-        <DrawCuboid x1="2006" y1="226" z1="20" x2="2006" y2="226" z2="14" type="lava" />            <!-- limits of our arena -->
-        <DrawCuboid x1="2015" y1="226" z1="3" x2="2018" y2="226" z2="4" type="lava" />            <!-- limits of our arena -->
-        <DrawCuboid x1="2003" y1="227" z1="-3" x2="2003" y2="230" z2="-3" type="lapis_block" />            <!-- limits of our arena -->
-        <DrawCuboid x1="2008" y1="226" z1="-3" x2="2009" y2="226" z2="-6" type="lava" />            <!-- limits of our arena -->
-        <DrawCuboid x1="2014" y1="226" z1="-3" x2="2014" y2="226" z2="-11" type="lava" />            <!-- limits of our arena -->
-        <DrawCuboid x1="2015" y1="226" z1="-1" x2="2021" y2="226" z2="-1" type="lava" />            <!-- limits of our arena -->
-        <DrawCuboid x1="2019" y1="227" z1="-8" x2="2019" y2="230" z2="-8" type="lapis_block" />            <!-- limits of our arena -->
-
 
       </DrawingDecorator>
       <ServerQuitFromTimeUp timeLimitMs="20000"/>
@@ -116,7 +69,7 @@ missionXML='''<?xml version="1.0" encoding="UTF-8" standalone="no" ?>
   <AgentSection mode="Survival">
     <Name>Roby</Name>
     <AgentStart>
-      <Placement x="2004" y="227.0" z="1" pitch="60" yaw="0"/>
+      <Placement x="2003" y="227.0" z="4" pitch="60" yaw="0"/>
     </AgentStart>
     <AgentHandlers>
       <DiscreteMovementCommands/>
@@ -161,6 +114,97 @@ if agent_host.receivedArgument("help"):
 
 my_mission = MalmoPython.MissionSpec(missionXML, True)
 my_mission_record = MalmoPython.MissionRecordSpec()
+
+xcheck = []
+zcheck = []
+global lavaCoords
+lavaCoords = []
+lapis_x = int(round(1999 + 21*(random.random())))
+lapis_z = int(round(-9 + 28*(random.random())))
+def checkLapis(x, z):
+  if x == 2003 and z == 4: 
+    checkLapis(int(round(1999 + 21*(random.random()))), int(round(-9 + 28*(random.random()))))
+  else: 
+    my_mission.drawCuboid( x,226,z,x,230,z,"lapis_block")
+    return x, z
+
+def lavaSize(x, z):
+  x1 = x
+  x2 = int(round(x + 4*(random.random())))
+  z1 = z
+  z2 = int(round(z + 4*(random.random())))
+  return x1, x2, z1, z2
+
+def pathcheck(x1, x2, z1, z2, lapisx, lapisz, lavalist):
+  checkLava = []
+  print(x1, x2, z1, z2)
+  if x1 == x2 and z1==z2:
+    checkLava.append((x1, z1))
+  elif x1 == x2:
+    for i in range(z1, z2+1):
+      checkLava.append((x1, i))
+  elif z1 ==z2: 
+    for i in range(x1, x2+1):
+      checkLava.append((i, z1))
+
+  else:
+    for i in range(x1, x2+1):
+      for j in range(z1, z2+1): 
+        checkLava.append((i,j))
+
+  print(checkLava)
+  for i in range(0, len(checkLava)):
+    print(checkLava[i])
+    if checkLava[i][0] == 2003 and checkLava[i][1]==4:
+      print("true")
+      return
+    elif checkLava[i][0] == lapisx and checkLava[i][1]==lapisz:
+      print("true2")
+      return
+
+  for i in range(0, len(checkLava)):
+    if (checkLava[i][0], checkLava[i][1]) in lavalist:
+      print("hi")
+      return 0
+    elif ((checkLava[i][0] + 1), checkLava[i][0]) in lavalist:
+      print("hi")
+      return 0
+    elif (checkLava[i][0], (checkLava[i][1]+1)) in lavalist:
+      print("hi")
+      return 0
+    elif ((checkLava[i][0]-1), checkLava[i][0]) in lavalist:
+      print("hi")
+      return 0
+    elif (checkLava[i][0], (checkLava[i][1]-1)) in lavalist:
+      print("hi")
+      return 0
+    elif (checkLava[i][0]+1, (checkLava[i][1]+1)) in lavalist:
+      print("hi")
+      return 0
+    elif (checkLava[i][0]+1, (checkLava[i][1]-1)) in lavalist:
+      print("hi")
+      return 0
+    elif (checkLava[i][0]-1, (checkLava[i][1]+1)) in lavalist:
+      print("hi")
+      return 0
+    elif (checkLava[i][0]-1, (checkLava[i][1]-1)) in lavalist:
+      print("hi")
+      return 0
+  print("still running")
+  for i in range(0, len(checkLava)):
+    lavaCoords.append(checkLava[i])
+  my_mission.drawCuboid(x1, 226, z1, x2, 226, z2, "lava")
+
+lapis_x, lapis_z = checkLapis(lapis_x, lapis_z)
+
+for x in range(1999, 2020):
+    for z in range(-9,19):
+        if random.random()<0.5:
+          x1, x2, z1, z2 = lavaSize(x,z)
+          pathcheck(x1, x2, z1, z2, lapis_x, lapis_z, lavaCoords)
+          print(lavaCoords)
+
+
 
 agent_host.sendCommand("turn -0.5")
 agent_host.sendCommand("move 1")
