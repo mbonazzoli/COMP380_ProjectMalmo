@@ -48,8 +48,7 @@ with open(mission_file, 'r') as f:
     mission_xml = f.read()
     my_mission = MalmoPython.MissionSpec(mission_xml, True)
 
-xcheck = []
-zcheck = []
+
 global lavaCoords
 lavaCoords = []
 lapis_x = int(round(1999 + 21*(random.random())))
@@ -97,33 +96,23 @@ def pathcheck(x1, x2, z1, z2, lapisx, lapisz, lavalist):
 
   for i in range(0, len(checkLava)):
     if (checkLava[i][0], checkLava[i][1]) in lavalist:
-      print("hi")
-      return 0
+      return 
     elif ((checkLava[i][0] + 1), checkLava[i][0]) in lavalist:
-      print("hi")
-      return 0
+      return 
     elif (checkLava[i][0], (checkLava[i][1]+1)) in lavalist:
-      print("hi")
-      return 0
+      return 
     elif ((checkLava[i][0]-1), checkLava[i][0]) in lavalist:
-      print("hi")
-      return 0
+      return 
     elif (checkLava[i][0], (checkLava[i][1]-1)) in lavalist:
-      print("hi")
-      return 0
+      return 
     elif (checkLava[i][0]+1, (checkLava[i][1]+1)) in lavalist:
-      print("hi")
-      return 0
+      return 
     elif (checkLava[i][0]+1, (checkLava[i][1]-1)) in lavalist:
-      print("hi")
-      return 0
+      return 
     elif (checkLava[i][0]-1, (checkLava[i][1]+1)) in lavalist:
-      print("hi")
-      return 0
+      return 
     elif (checkLava[i][0]-1, (checkLava[i][1]-1)) in lavalist:
-      print("hi")
-      return 0
-  print("still running")
+      return 
   for i in range(0, len(checkLava)):
     lavaCoords.append(checkLava[i])
   my_mission.drawCuboid(x1, 226, z1, x2, 226, z2, "lava")
@@ -135,7 +124,6 @@ for x in range(1999, 2020):
         if random.random()<0.5:
           x1, x2, z1, z2 = lavaSize(x,z)
           pathcheck(x1, x2, z1, z2, lapis_x, lapis_z, lavaCoords)
-          print(lavaCoords)
 
 max_retries = 3
 
