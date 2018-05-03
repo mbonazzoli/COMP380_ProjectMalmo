@@ -48,6 +48,95 @@ with open(mission_file, 'r') as f:
     mission_xml = f.read()
     my_mission = MalmoPython.MissionSpec(mission_xml, True)
 
+xcheck = []
+zcheck = []
+global lavaCoords
+lavaCoords = []
+lapis_x = int(round(1999 + 21*(random.random())))
+lapis_z = int(round(-9 + 28*(random.random())))
+def checkLapis(x, z):
+  if x == 2003 and z == 4: 
+    checkLapis(int(round(1999 + 21*(random.random()))), int(round(-9 + 28*(random.random()))))
+  else: 
+    my_mission.drawCuboid( x,226,z,x,230,z,"lapis_block")
+    return x, z
+
+def lavaSize(x, z):
+  x1 = x
+  x2 = int(round(x + 4*(random.random())))
+  z1 = z
+  z2 = int(round(z + 4*(random.random())))
+  return x1, x2, z1, z2
+
+def pathcheck(x1, x2, z1, z2, lapisx, lapisz, lavalist):
+  checkLava = []
+  print(x1, x2, z1, z2)
+  if x1 == x2 and z1==z2:
+    checkLava.append((x1, z1))
+  elif x1 == x2:
+    for i in range(z1, z2+1):
+      checkLava.append((x1, i))
+  elif z1 ==z2: 
+    for i in range(x1, x2+1):
+      checkLava.append((i, z1))
+
+  else:
+    for i in range(x1, x2+1):
+      for j in range(z1, z2+1): 
+        checkLava.append((i,j))
+
+  print(checkLava)
+  for i in range(0, len(checkLava)):
+    print(checkLava[i])
+    if checkLava[i][0] == 2003 and checkLava[i][1]==4:
+      print("true")
+      return
+    elif checkLava[i][0] == lapisx and checkLava[i][1]==lapisz:
+      print("true2")
+      return
+
+  for i in range(0, len(checkLava)):
+    if (checkLava[i][0], checkLava[i][1]) in lavalist:
+      print("hi")
+      return 0
+    elif ((checkLava[i][0] + 1), checkLava[i][0]) in lavalist:
+      print("hi")
+      return 0
+    elif (checkLava[i][0], (checkLava[i][1]+1)) in lavalist:
+      print("hi")
+      return 0
+    elif ((checkLava[i][0]-1), checkLava[i][0]) in lavalist:
+      print("hi")
+      return 0
+    elif (checkLava[i][0], (checkLava[i][1]-1)) in lavalist:
+      print("hi")
+      return 0
+    elif (checkLava[i][0]+1, (checkLava[i][1]+1)) in lavalist:
+      print("hi")
+      return 0
+    elif (checkLava[i][0]+1, (checkLava[i][1]-1)) in lavalist:
+      print("hi")
+      return 0
+    elif (checkLava[i][0]-1, (checkLava[i][1]+1)) in lavalist:
+      print("hi")
+      return 0
+    elif (checkLava[i][0]-1, (checkLava[i][1]-1)) in lavalist:
+      print("hi")
+      return 0
+  print("still running")
+  for i in range(0, len(checkLava)):
+    lavaCoords.append(checkLava[i])
+  my_mission.drawCuboid(x1, 226, z1, x2, 226, z2, "lava")
+
+lapis_x, lapis_z = checkLapis(lapis_x, lapis_z)
+
+for x in range(1999, 2020):
+    for z in range(-9,19):
+        if random.random()<0.5:
+          x1, x2, z1, z2 = lavaSize(x,z)
+          pathcheck(x1, x2, z1, z2, lapis_x, lapis_z, lavaCoords)
+          print(lavaCoords)
+
 max_retries = 3
 
 # if agent_host.receivedArgument("test"):
