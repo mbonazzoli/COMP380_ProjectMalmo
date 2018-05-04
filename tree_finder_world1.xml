@@ -21,7 +21,7 @@
         <DrawCuboid x1 = "1997" y1 = "226" z1 = "-10" x2 = "2020" y2 = "226" z2 = "-11" type = "lava"/>
         <DrawCuboid x1 = "1998" y1 = "226" z1 = "21" x2 = "2020" y2 = "226" z2 = "20" type = "lava"/>
       </DrawingDecorator>
-      <ServerQuitFromTimeUp timeLimitMs="15000"/>
+      <ServerQuitFromTimeUp timeLimitMs="30000"/>
       <ServerQuitWhenAnyAgentFinishes/>
     </ServerHandlers>
   </ServerSection>
@@ -29,10 +29,11 @@
   <AgentSection mode="Survival">
     <Name>Roby</Name>
     <AgentStart>
-      <Placement x="2004.5" y="227.0" z="1.5" pitch="0" yaw="0"/>
+      <Placement x="2004.5" y="227.0" z="1.5" pitch="-2" yaw="0"/>
     </AgentStart>
     <AgentHandlers>
       <DiscreteMovementCommands/>
+      <AbsoluteMovementCommands/>
       <ContinuousMovementCommands/>
       <ObservationFromFullStats/>
       <ObservationFromGrid>
@@ -47,14 +48,9 @@
       </VideoProducer>
       <RewardForTouchingBlockType>
         <Block reward="-100.0" type="lava" behaviour="onceOnly"/>
-        <Block reward="100.0" type="lapis_block" behaviour="oncePerBlock"/>
+        <Block reward="100.0" type="lapis_block" behaviour="onceOnly"/>
       </RewardForTouchingBlockType>
       <RewardForSendingCommand reward="-1" />
-        <RewardForCollectingItem>
-            <Item reward="200" type="log"/>
-            <Item reward="-200" type="stone"/>
-            <Item reward="-200" type="sandstone"/>
-        </RewardForCollectingItem>
       <AgentQuitFromTouchingBlockType>
           <Block type="lava" />
       </AgentQuitFromTouchingBlockType>
