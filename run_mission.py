@@ -23,7 +23,8 @@ import os
 import sys
 import time
 from tree_learner_agent import tabularQlearner
-
+import random
+import json
 
 sys.stdout = os.fdopen(sys.stdout.fileno(), 'w', 0)  # flush print output immediately
 actions = ['movenorth 1', 'movesouth 1', 'moveeast 1', 'movewest 1']
@@ -48,82 +49,107 @@ with open(mission_file, 'r') as f:
     mission_xml = f.read()
     my_mission = MalmoPython.MissionSpec(mission_xml, True)
 
+agent_host.setObservationsPolicy(MalmoPython.ObservationsPolicy.LATEST_OBSERVATION_ONLY)
+agent_host.setVideoPolicy(MalmoPython.VideoPolicy.LATEST_FRAME_ONLY)
 
 global lavaCoords
 lavaCoords = []
-lapis_x = int(round(1999 + 21*(random.random())))
-lapis_z = int(round(-9 + 28*(random.random())))
+lapis_x = int(round(1999 + 21 * (random.random())))
+lapis_z = int(round(-9 + 28 * (random.random())))
+
+
 def checkLapis(x, z):
-  if x == 2003 and z == 4: 
-    checkLapis(int(round(1999 + 21*(random.random()))), int(round(-9 + 28*(random.random()))))
-  else: 
-    my_mission.drawCuboid( x,226,z,x,230,z,"lapis_block")
-    return x, z
+    if x == 2003 and z == 4:
+        while x == 2003 and z == 4:
+            x = int(round(1999 + 21 * (random.random())))
+            z = int(round(-9 + 28 * (random.random())))
+        return x, z
+    else:
+        my_mission.drawCuboid(x, 226, z, x, 230, z, "lapis_block")
+        # print(x, z)
+        return x, z
+
 
 def lavaSize(x, z):
-  x1 = x
-  x2 = int(round(x + 4*(random.random())))
-  z1 = z
-  z2 = int(round(z + 4*(random.random())))
-  return x1, x2, z1, z2
+    x1 = x
+    x2 = int(round(x + 4 * (random.random())))
+    z1 = z
+    z2 = int(round(z + 4 * (random.random())))
+    return x1, x2, z1, z2
+
 
 def pathcheck(x1, x2, z1, z2, lapisx, lapisz, lavalist):
-  checkLava = []
-  print(x1, x2, z1, z2)
-  if x1 == x2 and z1==z2:
-    checkLava.append((x1, z1))
-  elif x1 == x2:
-    for i in range(z1, z2+1):
-      checkLava.append((x1, i))
-  elif z1 ==z2: 
-    for i in range(x1, x2+1):
-      checkLava.append((i, z1))
+    checkLava = []
+    # print(x1, x2, z1, z2)
+    if x1 == x2 and z1 == z2:
+        checkLava.append((x1, z1))
+    elif x1 == x2:
+        for i in range(z1, z2 + 1):
+            checkLava.append((x1, i))
+    elif z1 == z2:
+        for i in range(x1, x2 + 1):
+            checkLava.append((i, z1))
 
-  else:
-    for i in range(x1, x2+1):
-      for j in range(z1, z2+1): 
-        checkLava.append((i,j))
+    else:
+        for i in range(x1, x2 + 1):
+            for j in range(z1, z2 + 1):
+                checkLava.append((i, j))
 
-  print(checkLava)
-  for i in range(0, len(checkLava)):
-    print(checkLava[i])
-    if checkLava[i][0] == 2003 and checkLava[i][1]==4:
-      print("true")
-      return
-    elif checkLava[i][0] == lapisx and checkLava[i][1]==lapisz:
-      print("true2")
-      return
+    # print(checkLava)
+    for i in range(0, len(checkLava)):
+        # print(checkLava[i])
+        if checkLava[i][0] == 2003 and checkLava[i][1] == 4:
+            # print("true")
+            return
+        elif checkLava[i][0] == lapisx and checkLava[i][1] == lapisz:
+            # print("true2")
+            return
 
-  for i in range(0, len(checkLava)):
-    if (checkLava[i][0], checkLava[i][1]) in lavalist:
-      return 
-    elif ((checkLava[i][0] + 1), checkLava[i][0]) in lavalist:
-      return 
-    elif (checkLava[i][0], (checkLava[i][1]+1)) in lavalist:
-      return 
-    elif ((checkLava[i][0]-1), checkLava[i][0]) in lavalist:
-      return 
-    elif (checkLava[i][0], (checkLava[i][1]-1)) in lavalist:
-      return 
-    elif (checkLava[i][0]+1, (checkLava[i][1]+1)) in lavalist:
-      return 
-    elif (checkLava[i][0]+1, (checkLava[i][1]-1)) in lavalist:
-      return 
-    elif (checkLava[i][0]-1, (checkLava[i][1]+1)) in lavalist:
-      return 
-    elif (checkLava[i][0]-1, (checkLava[i][1]-1)) in lavalist:
-      return 
-  for i in range(0, len(checkLava)):
-    lavaCoords.append(checkLava[i])
-  my_mission.drawCuboid(x1, 226, z1, x2, 226, z2, "lava")
+    for i in range(0, len(checkLava)):
+        if (checkLava[i][0], checkLava[i][1]) in lavalist:
+            return
+        elif ((checkLava[i][0] + 1), checkLava[i][0]) in lavalist:
+            return
+        elif (checkLava[i][0], (checkLava[i][1] + 1)) in lavalist:
+            return
+        elif ((checkLava[i][0] - 1), checkLava[i][0]) in lavalist:
+            return
+        elif (checkLava[i][0], (checkLava[i][1] - 1)) in lavalist:
+            return
+        elif (checkLava[i][0] + 1, (checkLava[i][1] + 1)) in lavalist:
+            return
+        elif (checkLava[i][0] + 1, (checkLava[i][1] - 1)) in lavalist:
+            return
+        elif (checkLava[i][0] - 1, (checkLava[i][1] + 1)) in lavalist:
+            return
+        elif (checkLava[i][0] - 1, (checkLava[i][1] - 1)) in lavalist:
+            return
+    for i in range(0, len(checkLava)):
+        lavaCoords.append(checkLava[i])
+    my_mission.drawCuboid(x1, 226, z1, x2, 226, z2, "lava")
+
 
 lapis_x, lapis_z = checkLapis(lapis_x, lapis_z)
 
 for x in range(1999, 2020):
-    for z in range(-9,19):
-        if random.random()<0.5:
-          x1, x2, z1, z2 = lavaSize(x,z)
-          pathcheck(x1, x2, z1, z2, lapis_x, lapis_z, lavaCoords)
+    for z in range(-9, 19):
+        if random.random() < 0.5:
+            x1, x2, z1, z2 = lavaSize(x, z)
+            pathcheck(x1, x2, z1, z2, lapis_x, lapis_z, lavaCoords)
+
+def testTree():
+    obs_text = world_state.observations[-1].text
+    obs = json.loads(obs_text)  # most recent observation
+    # self.logger.debug(obs)
+
+    if u'floor3x3' not in obs or u'Yaw' not in obs:
+        print("Incomplete observation received %s" % obs_text)
+        # self.logger.error("Incomplete observation received %s" % obs_text)
+
+    yaw = int(obs[u'Yaw'])
+    treePos = str(agent.findTreePos(agent_host, world_state, yaw)[0])
+
+    print("Tree Pos: %s; " % treePos)
 
 max_retries = 3
 
@@ -168,6 +194,18 @@ for i in range(num_repeats):
     print 'Q_table %s' % q_table
     cumulative_rewards += [cumulative_reward]
 
+    # Testing Tree Finder
+    # counter = 0
+    # while world_state.is_mission_running and counter < 10:
+    #     if len(world_state.observations) > 0 and not \
+    #             world_state.observations[-1].text == "{}":
+    #         counter += 1
+    #         print(counter)
+    #         time.sleep(0.1)
+    #         testTree()
+    #     break
+
+
     # print("OUTPUT GRAPH")
     # agent.drawGraph(cumulative_rewards)
 
@@ -176,9 +214,10 @@ for i in range(num_repeats):
 
 agent.saveModel()
 
-
 print "Done."
 
 print
 print "Cumulative rewards for all %d runs:" % num_repeats
 print cumulative_rewards
+
+

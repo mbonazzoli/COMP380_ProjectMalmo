@@ -32,6 +32,10 @@ class tabularQlearner:
         self.canvas = None
         self.root = None
 
+        self.x = None
+        self.y = None
+        self.z = None
+
         # self.training
 
         if(model == None):
@@ -45,8 +49,7 @@ class tabularQlearner:
         # retrieve the old action value from the Q-table (indexed by the previous state and the previous action)
         old_q = self.q_table[self.prev_s][self.prev_a]
 
-        new_q = old_q + self.alpha * (reward
-                + self.gamma * max(self.q_table[current_state]) - old_q)
+        new_q = old_q + self.alpha * (reward + self.gamma * max(self.q_table[current_state]) - old_q)
 
         # assign the new action value to the Q-table
         self.q_table[self.prev_s][self.prev_a] = new_q
@@ -69,37 +72,32 @@ class tabularQlearner:
         obs = json.loads(obs_text)  # most recent observation
         self.logger.debug(obs)
         # using grid output as state space
-        if u'floor3x3'not in obs:
+        if u'floor3x3'not in obs or u'Yaw' not in obs:
+            print("Incomplete observation received %s" % obs_text)
             self.logger.error("Incomplete observation received %s" % obs_text)
             return None
+
+        yaw = int(obs[u'Yaw'])
+
+        # TODO
+        treePos = str(self.findTreePos(agent_host, world_state, yaw)[0])
+
+        print("Tree Position: %s" % treePos)
+
         current_s_list = self.createGridObs(obs['floor3x3'])
+        current_s_list = current_s_list[:9]
 
-        # if len(world_state.video_frames) > 0:
-        #     tree_pos = self.findTreePos(world_state.video_frames[0].pixels)
-        #     current_s_list.append(tree_pos)
-        # else:
-        #     current_s_list.append(-1)
+        # current_s_list.append(treePos)
 
-        current_s = ": ".join(current_s_list[:9])
+        current_s = ": ".join(current_s_list)
+        print("Current State %s" % current_s)
 
-        if not u'XPos' in obs or not u'ZPos' in obs or not u'Yaw':
-            print("Not Found pos Obs")
-            self.logger.error("Incomplete observation received: %s" % obs_text)
-            return 0
-        current_pos = "%d:%d" % (int(obs[u'XPos']),
-                                     int(obs[u'ZPos']))
-
-        self.logger.debug("State: %s (x = %.2f, z = %.2f)" % (current_pos, float(obs[u'XPos']), float(obs[u'ZPos'])))
-
-
-        if not self.q_table.has_key(current_s):
+        if current_s not in self.q_table:
             self.q_table[current_s] = ([0] * len(self.actions))
 
         # update Q values
         if self.prev_s is not None and self.prev_a is not None:
             self.updateQTable(current_r, current_s)
-
-
 
         # select the next action
         rnd = random.random()
@@ -126,7 +124,8 @@ class tabularQlearner:
         except RuntimeError as e:
             self.logger.error("Failed to send command: %s" % e)
 
-        return current_r
+        # Adding 360 to offset number off commands sent to turn
+        return current_r + 360
 
     def run(self, agent_host):
         """run the agent on the world"""
@@ -155,6 +154,7 @@ class tabularQlearner:
                         current_r += reward.getValue()
                     if world_state.is_mission_running and len(world_state.observations) > 0 and not \
                     world_state.observations[-1].text == "{}":
+                        self.x, self.y, self.z = self.getXYZ(world_state)
                         total_reward += self.act(world_state, agent_host, current_r)
                         break
                     if not world_state.is_mission_running:
@@ -180,6 +180,7 @@ class tabularQlearner:
                         current_r += reward.getValue()
                     if world_state.is_mission_running and len(world_state.observations) > 0 and not \
                     world_state.observations[-1].text == "{}":
+                        self.x, self.y, self.z = self.getXYZ(world_state)
                         total_reward += self.act(world_state, agent_host, current_r)
                         break
                     if not world_state.is_mission_running:
@@ -195,31 +196,132 @@ class tabularQlearner:
 
         return total_reward, self.q_table
 
-    def findTreePos(self, frame):
-        video_height = 240
-        video_width = 320
+    # def findTreePos2(self, agent_host, frame, current_yaw_delta_from_depth=0):
+    #     video_width = 320
+    #     video_height = 240
+    #     y = int(video_height / 2)
+    #     rowstart = y * video_width
+    #
+    #     v = 0
+    #     v_max = 0
+    #     v_max_pos = 0
+    #     v_min = 0
+    #     v_min_pos = 0
+    #
+    #     dv = 0
+    #     dv_max = 0
+    #     dv_max_pos = 0
+    #     dv_max_sign = 0
+    #
+    #     d2v = 0
+    #     d2v_max = 0
+    #     d2v_max_pos = 0
+    #     d2v_max_sign = 0
+    #
+    #     for x in range(0, 360):
+    #         nv = frame[(rowstart + x) * 4 + 3]
+    #         print(nv)
+    #         ndv = nv - v
+    #         nd2v = ndv - dv
+    #
+    #         if nv > v_max or x == 0:
+    #             v_max = nv
+    #             v_max_pos = x
+    #
+    #         if nv < v_min or x == 0:
+    #             v_min = nv
+    #             v_min_pos = x
+    #
+    #         if abs(ndv) > dv_max or x == 1:
+    #             dv_max = abs(ndv)
+    #             dv_max_pos = x
+    #             dv_max_sign = ndv > 0
+    #
+    #         if abs(nd2v) > d2v_max or x == 2:
+    #             d2v_max = abs(nd2v)
+    #             d2v_max_pos = x
+    #             d2v_max_sign = nd2v > 0
+    #
+    #         d2v = nd2v
+    #         dv = ndv
+    #         v = nv
+    #     if(d2v_max_pos > 8):
+    #         print(d2v_max_pos)
+    #         # d2v max discontinuity
+    #         return d2v_max_pos
 
-        y = int(video_height/2)
-        row_start = y*video_width
+    def findTreePos(self, agent_host, world_state, yaw):
+        """Turns the agent in a circle to identify the nearest object sticking up in the world"""
+        time.sleep(0.1)
+        video_height = 480
+        video_width = 640
 
-        depth_prev = 0
-        diff = 0
+        middle_pixel = (video_width*4*(video_height/2)) + ((video_width/2)*4) + 3
         diff_max = 0
-        diff_max_pos = 0
-        min_dist = 0
+        diff_max_yaw = 0
+        obj_dist = 0
+        prev_depth = 0
 
-        for x in range(0, video_width):
-            depth_curr = frame[(row_start + x) * 4 + 3]
-            diff = abs(depth_curr-depth_prev)
-            if diff > diff_max:
-                diff_max = diff
-                diff_max_pos = x
+        for i in range(-175, 175, 5):
+            # Make sure we get new frame
+            # print(world_state.number_of_video_frames_since_last_state)
+            # while world_state.number_of_video_frames_since_last_state < 1 and world_state.is_mission_running:
+            #     time.sleep(0.1)
+            #     print("Reaching while Loop")
+            #     world_state = agent_host.getWorldState()
 
-        return diff_max_pos
+            if world_state.is_mission_running:
+                world_state = agent_host.getWorldState()
 
+                while(world_state.number_of_video_frames_since_last_state ==0):
+                    time.sleep(0.05)
+                    world_state = agent_host.getWorldState()
+                    print(world_state.number_of_video_frames_since_last_state)
+
+                if(world_state.is_mission_running):
+                    print(world_state)
+                    # print(len(world_state.video_frames))
+                    frame = world_state.video_frames[0].pixels
+                    curr_depth = frame[middle_pixel]
+                    print("Current Depth %d" % curr_depth)
+
+                    if i == 0:
+                        prev_depth = curr_depth
+                    else:
+                        # if diff negative looking at left side of object
+                        diff = abs(curr_depth-prev_depth)
+                        # time.sleep(0.01)
+                        # print("Current Difference %d" % diff)
+
+                        if diff > diff_max:
+                            diff_max = diff
+                            obj_dist = curr_depth
+                            diff_max_yaw = i
+                    new_yaw = i
+                    turnCommand = "setYaw %s" % new_yaw
+                    agent_host.sendCommand(turnCommand)
+                    agent_host.sendCommand("tp "+str(self.x)+" "+str(self.y)+" "+str(self.z))
+                    time.sleep(0.1)
+
+        return diff_max_yaw, obj_dist
+
+    def getXYZ(self, world_state):
+
+        obs_text = world_state.observations[-1].text
+        obs = json.loads(obs_text)  # most recent observation
+
+        if u'XPos' not in obs or u'YPos' not in obs or u'ZPos' not in obs:
+            print("Incomplete observation received %s" % obs_text)
+            self.logger.error("Incomplete observation received %s" % obs_text)
+            return None
+
+        x = obs[u'XPos']
+        y = obs[u'YPos']
+        z = obs[u'ZPos']
+
+        return x, y, z
 
     def setUpGraph(self):
-
         fig = plt.figure()
         ax = fig.add_subplot(111)
         plt.ylim(0, 200)
@@ -233,7 +335,6 @@ class tabularQlearner:
         return fig, ax
 
     def drawGraph(self, rewards):
-
         self.ax.clear()
         self.ax.plot(np.arange(len(rewards)), rewards, '-b')
         self.fig.canvas.draw()
@@ -272,6 +373,7 @@ if __name__ == '__main__':
 
     agent_host = MalmoPython.AgentHost()
     world_state = agent_host.getWorldState()
+
     print(world_state.video_frames[0].pixels)
     print
     print(world_state.observations)

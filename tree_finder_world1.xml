@@ -29,12 +29,12 @@
   <AgentSection mode="Survival">
     <Name>Roby</Name>
     <AgentStart>
-      <Placement x="2004.5" y="227.0" z="1.5" pitch="-2" yaw="0"/>
+      <Placement x="2003.5" y="227.0" z="4.5" pitch="-1" yaw="-179"/>
     </AgentStart>
     <AgentHandlers>
       <DiscreteMovementCommands/>
       <AbsoluteMovementCommands/>
-      <ContinuousMovementCommands/>
+      <ContinuousMovementCommands turnSpeedDegs="360"/>
       <ObservationFromFullStats/>
       <ObservationFromGrid>
         <Grid name="floor3x3">
@@ -43,8 +43,8 @@
         </Grid>
       </ObservationFromGrid>
       <VideoProducer>
-        <Width> 320 </Width>
-        <Height> 240 </Height>
+        <Width> 640 </Width>
+        <Height> 480 </Height>
       </VideoProducer>
       <RewardForTouchingBlockType>
         <Block reward="-100.0" type="lava" behaviour="onceOnly"/>
