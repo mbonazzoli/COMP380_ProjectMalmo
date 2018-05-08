@@ -270,8 +270,8 @@ class tabularQlearner:
 
     def findTreePos(self, agent_host, world_state):
         """Turns the agent in a circle to identify the nearest object sticking up in the world (hopefully a tree)"""
-        video_height = 240
-        video_width = 320
+        video_height = 240*4
+        video_width = 320*4
 
         middle_pixel = (video_width*4*(video_height/2)) + ((video_width/2)*4) + 3
         minDepth = 255
